@@ -1,16 +1,20 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { Home, City } from "./features";
+import { Home, City, NoMatch } from "./features";
+import { Routes } from "./constants/routes";
 
 function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/">
+        <Route exact path={Routes.HOME}>
           <Home />
         </Route>
-        <Route path="/:city">
+        <Route path={Routes.CITY}>
           <City />
+        </Route>
+        <Route path={Routes.NO_MATCH}>
+          <NoMatch />
         </Route>
       </Switch>
     </Router>

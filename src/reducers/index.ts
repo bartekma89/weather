@@ -1,9 +1,23 @@
 import { combineReducers } from "redux";
 
-import { weatherReducer } from "./weather.reducer";
+import {
+  cityWeatherReducer,
+  InitialState as CityWeatherState,
+} from "./cityWeather.reducer";
 
-export const rootReducer = combineReducers({
-  weather: weatherReducer,
+import {
+  citiesWeatherReducer,
+  InitialState as CitiesWeatherState,
+} from "./citiesWeather.reducer";
+
+interface AppState {
+  city: CityWeatherState;
+  cities: CitiesWeatherState;
+}
+
+export const rootReducer = combineReducers<AppState>({
+  city: cityWeatherReducer,
+  cities: citiesWeatherReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

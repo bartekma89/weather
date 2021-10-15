@@ -5,34 +5,36 @@ export enum Status {
   REJECTED = "rejected",
 }
 
-export enum WeatherAction {
-  PENDING_WEATHER = "weather/pending",
-  RESOLVED_WEATHER = "weather/resolved",
-  REJECTED_WEATHER = "weather/rejected",
+export type Error = string | null;
+
+// city actions
+
+export enum CityWeatherAction {
+  PENDING = "city/weather/pending",
+  RESOLVED = "city/weather/resolved",
+  REJECTED = "city/weather/rejected",
 }
 
-export type WeatherActionsType =
-  | WeatherPendingAction
-  | WeatherRejectedAction
-  | WeatherResolvedAction;
+export type CityWeatherActionsType =
+  | CityWeatherPendingAction
+  | CityWeatherRejectedAction
+  | CityWeatherResolvedAction;
 
-export interface WeatherPendingAction {
-  type: WeatherAction.PENDING_WEATHER;
+export interface CityWeatherPendingAction {
+  type: CityWeatherAction.PENDING;
 }
 
-export type Error = string;
-
-export interface WeatherRejectedAction {
-  type: WeatherAction.REJECTED_WEATHER;
+export interface CityWeatherRejectedAction {
+  type: CityWeatherAction.REJECTED;
   payload: Error;
 }
 
-export interface WeatherResolvedAction {
-  type: WeatherAction.RESOLVED_WEATHER;
-  payload: WeatherData;
+export interface CityWeatherResolvedAction {
+  type: CityWeatherAction.RESOLVED;
+  payload: CityWeatherData;
 }
 
-export interface WeatherData {
+export interface CityWeatherData {
   coord: {
     lon: number;
     lat: number;
@@ -75,4 +77,32 @@ export interface WeatherData {
   id: number;
   name: string;
   cod: number;
+}
+
+// cities
+
+export enum CitiesWeatherAction {
+  PENDING = "cities/weather/pending",
+  RESOLVED = "cities/weather/resolved",
+  REJECTED = "cities/weather/rejected",
+}
+
+export type CitiesWeatherActionsType =
+  | CitiesWeatherPendingAction
+  | CitiesWeatherRejectedAction
+  | CitiesWeatherResolvedAction;
+
+export interface CitiesWeatherPendingAction {
+  type: CitiesWeatherAction.PENDING;
+}
+
+export interface CitiesWeatherRejectedAction {
+  type: CitiesWeatherAction.REJECTED;
+  payload: Error;
+}
+
+export interface CitiesWeatherResolvedAction {
+  type: CitiesWeatherAction.RESOLVED;
+  payload: CityWeatherData[];
+  // payload: any;
 }

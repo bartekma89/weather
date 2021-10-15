@@ -1,35 +1,41 @@
-import { Status, WeatherAction, WeatherActionsType } from "../types";
+import {
+  Status,
+  CityWeatherAction,
+  CityWeatherActionsType,
+  CityWeatherData,
+  Error,
+} from "../types";
 
 export interface InitialState {
-  data: null;
-  status: string;
-  error: null;
+  data: CityWeatherData | null;
+  status: Status;
+  error: Error;
 }
 
-const weatherState: InitialState = {
+const cityWeatherState: InitialState = {
   data: null,
   status: Status.IDLE,
   error: null,
 };
 
-export const weatherReducer = (
-  state = weatherState,
-  action: WeatherActionsType
+export const cityWeatherReducer = (
+  state = cityWeatherState,
+  action: CityWeatherActionsType
 ) => {
   switch (action.type) {
-    case WeatherAction.PENDING_WEATHER:
+    case CityWeatherAction.PENDING:
       return {
         ...state,
         status: Status.PENDING,
       };
-    case WeatherAction.RESOLVED_WEATHER:
+    case CityWeatherAction.RESOLVED:
       return {
         ...state,
         status: Status.RESOLVED,
         data: action.payload,
         error: null,
       };
-    case WeatherAction.REJECTED_WEATHER:
+    case CityWeatherAction.REJECTED:
       return {
         ...state,
         status: Status.REJECTED,
