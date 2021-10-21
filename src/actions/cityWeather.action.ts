@@ -39,8 +39,8 @@ export const fetchCityWeatherData =
     dispatch(cityWeatherPending());
 
     try {
-      const result = await getCity(city);
-      dispatch(cityWeatherResolve(result.data));
+      const { data } = await getCity(city);
+      dispatch(cityWeatherResolve(data));
     } catch (_error) {
       const error = _error as ErrorType;
       dispatch(cityWeatherReject(error.message));

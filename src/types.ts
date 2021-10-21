@@ -7,8 +7,14 @@ export enum Status {
 
 export type Error = string | null;
 
-// city actions
+export enum WeatherType {
+  TEMPERATURE = "temperature",
+  WIND = "wind",
+  HUMIDITY = "humidity",
+  PRESSURE = "pressure",
+}
 
+// city actions
 export enum CityWeatherAction {
   PENDING = "city/weather/pending",
   RESOLVED = "city/weather/resolved",
@@ -80,7 +86,6 @@ export interface CityWeatherData {
 }
 
 // cities
-
 export enum CitiesWeatherAction {
   PENDING = "cities/weather/pending",
   RESOLVED = "cities/weather/resolved",
@@ -104,5 +109,4 @@ export interface CitiesWeatherRejectedAction {
 export interface CitiesWeatherResolvedAction {
   type: CitiesWeatherAction.RESOLVED;
   payload: CityWeatherData[];
-  // payload: any;
 }

@@ -1,19 +1,74 @@
-import { CityWeatherData } from "../types";
-import { calculateAmplitude, getWeatherParameters } from "../helpers";
+import { useMemo } from "react";
+
+import { CityWeatherData, WeatherType } from "../types";
+import {
+  calculateAmplitudeValue,
+  getWeatherParameters,
+  CalculatedValueType,
+} from "../helpers";
 
 interface ComponentProps {
   citiesWeather: CityWeatherData[];
   cityWeather: CityWeatherData;
 }
 
+type WeatherCityType = {
+  id: number;
+  type: WeatherType;
+  mainCityValue: number;
+  cityValue: number;
+  calculatedValue: CalculatedValueType;
+};
+
 const CitiesTable = ({ citiesWeather, cityWeather }: ComponentProps) => {
+  const weatherCitiesArray = useMemo(
+    () =>
+      (cityData: CityWeatherData): WeatherCityType[] =>
+        [
+          {
+            id: cityData.id,
+            type: WeatherType.TEMPERATURE,
+            mainCityValue: cityWeather.main.temp,
+            cityValue: cityData.main.temp,
+            calculatedValue: calculateAmplitudeValue,
+          },
+          {
+            id: cityData.id,
+            type: WeatherType.HUMIDITY,
+            mainCityValue: cityWeather.main.humidity,
+            cityValue: cityData.main.humidity,
+            calculatedValue: calculateAmplitudeValue,
+          },
+          {
+            id: cityData.id,
+            type: WeatherType.PRESSURE,
+            mainCityValue: cityWeather.main.pressure,
+            cityValue: cityData.main.pressure,
+            calculatedValue: calculateAmplitudeValue,
+          },
+          {
+            id: cityData.id,
+            type: WeatherType.WIND,
+            mainCityValue: cityWeather.wind.speed,
+            cityValue: cityData.wind.speed,
+            calculatedValue: calculateAmplitudeValue,
+          },
+        ],
+    [
+      cityWeather.main.humidity,
+      cityWeather.main.pressure,
+      cityWeather.main.temp,
+      cityWeather.wind.speed,
+    ]
+  );
+
   return (
     <table>
       <tbody>
         <tr>
-          {citiesWeather.map((city) => {
+          {citiesWeather.map(({ id, weather, main }) => {
             return (
-              <td key={`image_${city.id}`}>
+              <td key={`image_${id}`}>
                 <div
                   style={{
                     display: "flex",
@@ -22,31 +77,31 @@ const CitiesTable = ({ citiesWeather, cityWeather }: ComponentProps) => {
                   }}
                 >
                   <img
-                    src={`http://openweathermap.org/img/wn/${city?.weather[0].icon}@2x.png`}
+                    src={`http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`}
                     alt="cloudy weather"
                     height="50"
                   />
                   <span style={{ fontSize: "36px" }}>
-                    {Math.round(city.main.temp)}°C
+                    {Math.round(main.temp)}°C
                   </span>
                 </div>
                 <div>
-                  {`Odczuwalna temperatura ${city.main.feels_like.toFixed(
-                    1
-                  )}°C. ${city.weather[0].description}`}
+                  {`Odczuwalna temperatura ${main.feels_like.toFixed(1)}°C. ${
+                    weather[0].description
+                  }`}
                 </div>
               </td>
             );
           })}
         </tr>
         <tr>
-          {citiesWeather.map((city) => {
+          {citiesWeather.map(({ id, name, sys }) => {
             return (
-              <td key={`name_${city.id}`}>
+              <td key={`name_${id}`}>
                 <strong>
-                  {city?.name}, {city?.sys.country}{" "}
+                  {name}, {sys.country}{" "}
                   <img
-                    src={`http://openweathermap.org/images/flags/${city?.sys.country.toLowerCase()}.png`}
+                    src={`http://openweathermap.org/images/flags/${sys.country.toLowerCase()}.png`}
                     alt="flag country"
                   />{" "}
                 </strong>
@@ -58,38 +113,13 @@ const CitiesTable = ({ citiesWeather, cityWeather }: ComponentProps) => {
           {citiesWeather.map((city) => {
             return (
               <td key={`weather_parameters_${city.id}`}>
-                <p>
-                  {getWeatherParameters({
-                    type: "temperature",
-                    mainCityValue: cityWeather?.main.temp,
-                    cityValue: city.main.temp,
-                    calculatedValue: calculateAmplitude,
-                  })}
-                </p>
-                <p>
-                  {getWeatherParameters({
-                    type: "humidity",
-                    mainCityValue: cityWeather?.main.humidity,
-                    cityValue: city.main.humidity,
-                    calculatedValue: calculateAmplitude,
-                  })}
-                </p>
-                <p>
-                  {getWeatherParameters({
-                    type: "pressure",
-                    mainCityValue: cityWeather?.main.pressure,
-                    cityValue: city.main.pressure,
-                    calculatedValue: calculateAmplitude,
-                  })}
-                </p>
-                <p>
-                  {getWeatherParameters({
-                    type: "windy",
-                    mainCityValue: cityWeather?.wind.speed,
-                    cityValue: city.wind.speed,
-                    calculatedValue: calculateAmplitude,
-                  })}
-                </p>
+                {weatherCitiesArray(city).map((cityData, idx) => {
+                  return (
+                    <p key={`${idx}_${cityData.id}`}>
+                      {getWeatherParameters(cityData)}
+                    </p>
+                  );
+                })}
               </td>
             );
           })}

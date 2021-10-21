@@ -1,7 +1,5 @@
 import { SearchCityForm } from "../components";
 
-const Home = () => {
-  return <SearchCityForm />;
-};
+const Home = () => <SearchCityForm />;
 
 export default Home;

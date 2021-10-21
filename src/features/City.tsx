@@ -11,7 +11,6 @@ import {
 import {
   citiesWeatherDataSelector,
   citiesWeatherStatusSelector,
-  citiesWeatherErrorSelector,
 } from "../selectors/citiesWeather.selector";
 import { Routes } from "../constants/routes";
 import { Status } from "../types";
@@ -26,35 +25,37 @@ const City = () => {
   const cityWeatherError = useSelector(cityWeatherErrorSelector);
   const citiesWeatherData = useSelector(citiesWeatherDataSelector);
   const citiesWeatherStatus = useSelector(citiesWeatherStatusSelector);
-  const citiesWeatherError = useSelector(citiesWeatherErrorSelector);
   const history = useHistory();
   const params = useParams<ParamsType>();
   const dispatch = useDispatch();
 
-  const isLoadingCity = useMemo(() => {
-    return (
-      cityWeatherStatus === Status.IDLE || cityWeatherStatus === Status.PENDING
-    );
-  }, [cityWeatherStatus]);
+  const isLoadingCity = useMemo(
+    () =>
+      cityWeatherStatus === Status.IDLE || cityWeatherStatus === Status.PENDING,
+    [cityWeatherStatus]
+  );
 
-  const isResolvedCity = useMemo(() => {
-    return cityWeatherStatus === Status.RESOLVED;
-  }, [cityWeatherStatus]);
+  const isResolvedCity = useMemo(
+    () => cityWeatherStatus === Status.RESOLVED,
+    [cityWeatherStatus]
+  );
 
-  const isLoadingCities = useMemo(() => {
-    return (
+  const isLoadingCities = useMemo(
+    () =>
       citiesWeatherStatus === Status.IDLE ||
-      citiesWeatherStatus === Status.PENDING
-    );
-  }, [citiesWeatherStatus]);
+      citiesWeatherStatus === Status.PENDING,
+    [citiesWeatherStatus]
+  );
 
-  const isResolvedCities = useMemo(() => {
-    return citiesWeatherStatus === Status.RESOLVED;
-  }, [citiesWeatherStatus]);
+  const isResolvedCities = useMemo(
+    () => citiesWeatherStatus === Status.RESOLVED,
+    [citiesWeatherStatus]
+  );
 
   useEffect(() => {
     if (localStorage.getItem("city") !== params.city) {
       dispatch(fetchCityWeatherData(params.city!));
+      localStorage.setItem("city", params.city!);
     }
   }, [params.city, dispatch]);
 
@@ -65,7 +66,6 @@ const City = () => {
   }, [history, cityWeatherData, cityWeatherError]);
 
   useEffect(() => {
-    // TODO: obsługa jakby nie zwrocilo danych
     cityWeatherData && dispatch(fetchCitiesWeatherData());
   }, [dispatch, cityWeatherData]);
 
@@ -75,7 +75,7 @@ const City = () => {
       {isLoadingCity && <div>Loading...</div>}
       {isResolvedCity && <CityPanel cityWeather={cityWeatherData!} />}
       {isLoadingCities && <div>isLoading...</div>}
-      {isResolvedCity && isResolvedCities && (
+      {isResolvedCity && isResolvedCities && citiesWeatherData.length !== 0 && (
         <CitiesTable
           cityWeather={cityWeatherData!}
           citiesWeather={citiesWeatherData}

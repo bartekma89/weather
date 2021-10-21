@@ -1,8 +1,7 @@
 import { RootState } from "../reducers";
 
-export const citiesWeatherDataSelector = (state: RootState) =>
-  state.cities.data;
-export const citiesWeatherErrorSelector = (state: RootState) =>
-  state.cities.error;
-export const citiesWeatherStatusSelector = (state: RootState) =>
-  state.cities.status;
+export const citiesWeatherDataSelector = ({ cities }: RootState) => cities.data;
+export const citiesWeatherErrorSelector = ({ cities }: RootState) =>
+  cities.error;
+export const citiesWeatherStatusSelector = ({ cities }: RootState) =>
+  cities.status;

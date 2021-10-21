@@ -1,5 +1,11 @@
 import { axios } from "../services";
-import { CityWeatherData } from "../types";
+import { CityWeatherData, WeatherType } from "../types";
+
+type WeatherTypes =
+  | WeatherType.HUMIDITY
+  | WeatherType.TEMPERATURE
+  | WeatherType.PRESSURE
+  | WeatherType.WIND;
 
 type CalculationParams = {
   mainCityValue: number;
@@ -7,12 +13,26 @@ type CalculationParams = {
   precision?: number;
 };
 
+export type CalculatedValueType = ({
+  mainCityValue,
+  cityValue,
+  precision,
+}: CalculationParams) => number;
+
+type WeatherParametesType = {
+  type: WeatherTypes;
+  mainCityValue: number;
+  cityValue: number;
+  precision?: number;
+  calculatedValue: CalculatedValueType;
+};
+
 export const getCity = (city: string) =>
   axios.get<CityWeatherData>(
     `weather?q=${city}&lang=pl&units=metric&appid=${process.env.REACT_APP_API_KEY}`
   );
 
-export const calculateAmplitude = ({
+export const calculateAmplitudeValue = ({
   mainCityValue,
   cityValue,
   precision = 0,
@@ -26,19 +46,9 @@ export const getWeatherParameters = ({
   cityValue,
   calculatedValue,
   precision,
-}: {
-  type: "temperature" | "windy" | "humidity" | "pressure";
-  mainCityValue: number;
-  cityValue: number;
-  precision?: number;
-  calculatedValue: ({
-    mainCityValue,
-    cityValue,
-    precision,
-  }: CalculationParams) => number;
-}): string => {
+}: WeatherParametesType): string => {
   switch (type) {
-    case "temperature":
+    case WeatherType.TEMPERATURE:
       return mainCityValue >= cityValue
         ? `Temperatura jest wyższa o ${calculatedValue({
             mainCityValue,
@@ -50,7 +60,7 @@ export const getWeatherParameters = ({
             cityValue,
             precision,
           })}°C`;
-    case "windy":
+    case WeatherType.WIND:
       return mainCityValue >= cityValue
         ? `Siła wiatru jest większa o ${calculatedValue({
             mainCityValue,
@@ -62,8 +72,7 @@ export const getWeatherParameters = ({
             cityValue,
             precision,
           })}m/s`;
-    case "humidity":
-      console.log("humidity", mainCityValue, cityValue);
+    case WeatherType.HUMIDITY:
       return mainCityValue >= cityValue
         ? `Wilgotność jest wyższa o ${calculatedValue({
             mainCityValue,
@@ -75,7 +84,7 @@ export const getWeatherParameters = ({
             cityValue,
             precision,
           })}%`;
-    case "pressure":
+    case WeatherType.PRESSURE:
       return mainCityValue >= cityValue
         ? `Ciśnienie jest wyższe o ${calculatedValue({
             mainCityValue,

@@ -45,7 +45,7 @@ export const fetchCitiesWeatherData = () => async (dispatch: Dispatch) => {
     getCity(City.WROCLAW),
   ])
     .then((cities) => {
-      const data = cities.map((city) => city.data);
+      const data = cities.map(({ data }) => data);
       dispatch(citiesWeatherResolve(data));
     })
     .catch((_error) => {

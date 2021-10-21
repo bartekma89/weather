@@ -9,10 +9,10 @@ const CityPanel = ({ cityWeather }: ComponentProps) => {
     <div>
       <div>
         <strong>
-          {cityWeather?.name}, {cityWeather?.sys.country}{" "}
+          {cityWeather.name}, {cityWeather.sys.country}{" "}
           <img
-            src={`http://openweathermap.org/images/flags/${cityWeather?.sys.country.toLowerCase()}.png`}
-            alt="flag country"
+            src={`http://openweathermap.org/images/flags/${cityWeather.sys.country.toLowerCase()}.png`}
+            alt="country flag"
           />{" "}
         </strong>
       </div>
@@ -24,7 +24,7 @@ const CityPanel = ({ cityWeather }: ComponentProps) => {
         }}
       >
         <img
-          src={`http://openweathermap.org/img/wn/${cityWeather?.weather[0].icon}@2x.png`}
+          src={`http://openweathermap.org/img/wn/${cityWeather.weather[0].icon}@2x.png`}
           alt="cloudy weather"
           height="50"
         />
