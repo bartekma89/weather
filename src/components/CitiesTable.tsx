@@ -1,10 +1,12 @@
 import { useMemo } from "react";
+import { Table } from "reactstrap";
 
 import { CityWeatherData, WeatherType } from "../types";
 import {
   calculateAmplitudeValue,
   getWeatherParameters,
   CalculatedValueType,
+  capitalize,
 } from "../helpers";
 
 interface ComponentProps {
@@ -63,69 +65,59 @@ const CitiesTable = ({ citiesWeather, cityWeather }: ComponentProps) => {
   );
 
   return (
-    <table>
+    <Table responsive bordered>
       <tbody>
         <tr>
-          {citiesWeather.map(({ id, weather, main }) => {
-            return (
-              <td key={`image_${id}`}>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  <img
-                    src={`http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`}
-                    alt="cloudy weather"
-                    height="50"
-                  />
-                  <span style={{ fontSize: "36px" }}>
-                    {Math.round(main.temp)}°C
-                  </span>
-                </div>
-                <div>
-                  {`Odczuwalna temperatura ${main.feels_like.toFixed(1)}°C. ${
-                    weather[0].description
-                  }`}
-                </div>
-              </td>
-            );
-          })}
+          {citiesWeather.map(({ id, weather, main }) => (
+            <td key={`image_${id}`}>
+              <div className="d-flex flex-row flex-nowrap">
+                <img
+                  src={`http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`}
+                  alt="cloudy weather"
+                  height="50"
+                />
+                <span style={{ fontSize: "36px" }}>
+                  {Math.round(main.temp)}°C
+                </span>
+              </div>
+              <div>
+                {`Odczuwalna temperatura ${main.feels_like.toFixed(
+                  1
+                )}°C. ${capitalize(weather[0].description)}`}
+              </div>
+            </td>
+          ))}
         </tr>
         <tr>
-          {citiesWeather.map(({ id, name, sys }) => {
-            return (
-              <td key={`name_${id}`}>
-                <strong>
-                  {name}, {sys.country}{" "}
-                  <img
-                    src={`http://openweathermap.org/images/flags/${sys.country.toLowerCase()}.png`}
-                    alt="flag country"
-                  />{" "}
-                </strong>
-              </td>
-            );
-          })}
+          {citiesWeather.map(({ id, name, sys }) => (
+            <td key={`name_${id}`}>
+              <strong>
+                <span className="me-2 fs-5">
+                  {name}, {sys.country}
+                </span>{" "}
+                <img
+                  src={`http://openweathermap.org/images/flags/${sys.country.toLowerCase()}.png`}
+                  alt="flag country"
+                  height="15"
+                  className="mb-1"
+                />
+              </strong>
+            </td>
+          ))}
         </tr>
         <tr>
-          {citiesWeather.map((city) => {
-            return (
-              <td key={`weather_parameters_${city.id}`}>
-                {weatherCitiesArray(city).map((cityData, idx) => {
-                  return (
-                    <p key={`${idx}_${cityData.id}`}>
-                      {getWeatherParameters(cityData)}
-                    </p>
-                  );
-                })}
-              </td>
-            );
-          })}
+          {citiesWeather.map((city) => (
+            <td key={`weather_parameters_${city.id}`}>
+              {weatherCitiesArray(city).map((cityData, idx) => (
+                <p key={`${idx}_${cityData.id}`}>
+                  {getWeatherParameters(cityData)}
+                </p>
+              ))}
+            </td>
+          ))}
         </tr>
       </tbody>
-    </table>
+    </Table>
   );
 };
 

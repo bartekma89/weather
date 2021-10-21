@@ -27,6 +27,11 @@ type WeatherParametesType = {
   calculatedValue: CalculatedValueType;
 };
 
+export const capitalize = (value: string) => {
+  const [first, ...rest]: string[] = value.split("");
+  return `${first.toUpperCase()}${rest.join("")}`;
+};
+
 export const getCity = (city: string) =>
   axios.get<CityWeatherData>(
     `weather?q=${city}&lang=pl&units=metric&appid=${process.env.REACT_APP_API_KEY}`

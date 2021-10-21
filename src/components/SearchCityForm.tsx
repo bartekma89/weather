@@ -1,5 +1,14 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
+import {
+  Form,
+  Input,
+  Button,
+  FormGroup,
+  Col,
+  Row,
+  InputGroup,
+} from "reactstrap";
 
 import { fetchCityWeatherData } from "../actions/cityWeather.action";
 import { useHistory } from "react-router";
@@ -27,16 +36,24 @@ const SearchCityForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="city"
-        value={value}
-        onChange={handleChange}
-        placeholder="London, Warsaw, etc."
-      />
-      <button type="submit">Search</button>
-    </form>
+    <Form onSubmit={handleSubmit}>
+      <Row className="justify-content-center mt-4">
+        <Col md="8">
+          <InputGroup>
+            <Input
+              type="text"
+              name="city"
+              value={value}
+              onChange={handleChange}
+              placeholder="London, Warsaw, etc."
+            />
+            <Button color="primary" type="submit">
+              Search city
+            </Button>
+          </InputGroup>
+        </Col>
+      </Row>
+    </Form>
   );
 };
 

@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 
-import { SearchCityForm, CitiesTable, CityPanel } from "../components";
+import { SearchCityForm, CitiesTable, CityPanel, Spinner } from "../components";
 import {
   cityWeatherDataSelector,
   cityWeatherErrorSelector,
@@ -72,9 +72,9 @@ const City = () => {
   return (
     <>
       <SearchCityForm />
-      {isLoadingCity && <div>Loading...</div>}
+      {isLoadingCity && <Spinner />}
       {isResolvedCity && <CityPanel cityWeather={cityWeatherData!} />}
-      {isLoadingCities && <div>isLoading...</div>}
+      {isLoadingCities && <Spinner />}
       {isResolvedCity && isResolvedCities && citiesWeatherData.length !== 0 && (
         <CitiesTable
           cityWeather={cityWeatherData!}
