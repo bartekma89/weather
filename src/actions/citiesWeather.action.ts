@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 
-import { getCity } from "../helpers";
-import { City } from "../constants/cities";
+import { getWeatherCity } from "../helpers";
+import { City } from "../constants";
 
 import {
   CitiesWeatherAction,
@@ -10,14 +10,8 @@ import {
   CitiesWeatherRejectedAction,
   CitiesWeatherResolvedAction,
   Error as _Error,
+  ErrorType,
 } from "../types";
-
-type ErrorType = {
-  message: string;
-  name: string;
-  stack: string;
-  status: number;
-};
 
 const citiesWeatherPending = (): CitiesWeatherPendingAction => ({
   type: CitiesWeatherAction.PENDING,
@@ -39,10 +33,10 @@ export const fetchCitiesWeatherData = () => async (dispatch: Dispatch) => {
   dispatch(citiesWeatherPending());
 
   Promise.all([
-    getCity(City.CRACOW),
-    getCity(City.GDANSK),
-    getCity(City.WARSAW),
-    getCity(City.WROCLAW),
+    getWeatherCity(City.CRACOW),
+    getWeatherCity(City.GDANSK),
+    getWeatherCity(City.WARSAW),
+    getWeatherCity(City.WROCLAW),
   ])
     .then((cities) => {
       const data = cities.map(({ data }) => data);

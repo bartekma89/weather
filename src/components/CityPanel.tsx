@@ -23,7 +23,6 @@ const CityPanel = ({ cityWeather }: ComponentProps) => {
                     src={`http://openweathermap.org/images/flags/${cityWeather.sys.country.toLowerCase()}.png`}
                     alt="country flag"
                     height="15"
-                    className="mb-1"
                   />
                 </span>
               </strong>

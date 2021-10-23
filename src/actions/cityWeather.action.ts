@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 
-import { getCity } from "../helpers";
+import { getWeatherCity } from "../helpers";
 
 import {
   CityWeatherAction,
@@ -9,14 +9,8 @@ import {
   CityWeatherRejectedAction,
   CityWeatherResolvedAction,
   Error as _Error,
+  ErrorType,
 } from "../types";
-
-type ErrorType = {
-  message: string;
-  name: string;
-  stack: string;
-  status: number;
-};
 
 const cityWeatherPending = (): CityWeatherPendingAction => ({
   type: CityWeatherAction.PENDING,
@@ -39,7 +33,7 @@ export const fetchCityWeatherData =
     dispatch(cityWeatherPending());
 
     try {
-      const { data } = await getCity(city);
+      const { data } = await getWeatherCity(city);
       dispatch(cityWeatherResolve(data));
     } catch (_error) {
       const error = _error as ErrorType;

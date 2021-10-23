@@ -1,14 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
-import {
-  Form,
-  Input,
-  Button,
-  FormGroup,
-  Col,
-  Row,
-  InputGroup,
-} from "reactstrap";
+import { Form, Input, Button, Col, Row, InputGroup } from "reactstrap";
 
 import { fetchCityWeatherData } from "../actions/cityWeather.action";
 import { useHistory } from "react-router";

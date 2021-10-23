@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { Home, City, NoMatch } from "./features";
-import { Routes } from "./constants/routes";
+import { Routes } from "./constants";
 import { Layout } from "./components";
 
 import "./App.css";

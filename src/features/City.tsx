@@ -12,10 +12,11 @@ import {
   citiesWeatherDataSelector,
   citiesWeatherStatusSelector,
 } from "../selectors/citiesWeather.selector";
-import { Routes } from "../constants/routes";
+import { Routes } from "../constants";
 import { Status } from "../types";
 import { fetchCitiesWeatherData } from "../actions/citiesWeather.action";
 import { fetchCityWeatherData } from "../actions/cityWeather.action";
+import { fetchCityForecastData } from "../actions/cityForecast.action";
 
 type ParamsType = { city?: string };
 
@@ -51,6 +52,16 @@ const City = () => {
     () => citiesWeatherStatus === Status.RESOLVED,
     [citiesWeatherStatus]
   );
+
+  useEffect(() => {
+    cityWeatherData &&
+      dispatch(
+        fetchCityForecastData(
+          cityWeatherData.coord.lat,
+          cityWeatherData.coord.lon
+        )
+      );
+  }, [cityWeatherData, cityWeatherData?.id, dispatch]);
 
   useEffect(() => {
     if (localStorage.getItem("city") !== params.city) {

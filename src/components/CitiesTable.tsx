@@ -99,7 +99,6 @@ const CitiesTable = ({ citiesWeather, cityWeather }: ComponentProps) => {
                   src={`http://openweathermap.org/images/flags/${sys.country.toLowerCase()}.png`}
                   alt="flag country"
                   height="15"
-                  className="mb-1"
                 />
               </strong>
             </td>

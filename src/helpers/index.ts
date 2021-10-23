@@ -1,5 +1,6 @@
 import { axios } from "../services";
-import { CityWeatherData, WeatherType } from "../types";
+import { CityForecastData, CityWeatherData, WeatherType } from "../types";
+import { LANGUAGE, UNIT, Forecast } from "../constants";
 
 type WeatherTypes =
   | WeatherType.HUMIDITY
@@ -32,9 +33,14 @@ export const capitalize = (value: string) => {
   return `${first.toUpperCase()}${rest.join("")}`;
 };
 
-export const getCity = (city: string) =>
+export const getWeatherCity = (city: string) =>
   axios.get<CityWeatherData>(
-    `weather?q=${city}&lang=pl&units=metric&appid=${process.env.REACT_APP_API_KEY}`
+    `weather?q=${city}&lang=${LANGUAGE}&units=${UNIT}&appid=${process.env.REACT_APP_API_KEY}`
+  );
+
+export const getCityForecast = (lat: number, lon: number) =>
+  axios.get<CityForecastData>(
+    `onecall?lat=${lat}&lon=${lon}&exclude=${Forecast.MINUTELY},${Forecast.HOURLY}&lang=${LANGUAGE}&units=${UNIT}&appid=${process.env.REACT_APP_API_KEY}`
   );
 
 export const calculateAmplitudeValue = ({
