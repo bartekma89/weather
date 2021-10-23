@@ -13,6 +13,7 @@ export enum Routes {
 
 export const LANGUAGE = "pl";
 export const UNIT = "metric";
+export const celsiusSymbol = "°C";
 
 export enum Forecast {
   MINUTELY = "minutely",

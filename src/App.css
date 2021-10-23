@@ -9,3 +9,7 @@
 td {
   min-width: 230px;
 }
+
+#daily-list li:hover {
+  background-color: rgba(72, 72, 74, 0.05);
+}

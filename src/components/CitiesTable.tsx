@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Table } from "reactstrap";
 
+import { celsiusSymbol } from "../constants";
 import { CityWeatherData, WeatherType } from "../types";
 import {
   calculateAmplitudeValue,
@@ -77,13 +78,14 @@ const CitiesTable = ({ citiesWeather, cityWeather }: ComponentProps) => {
                   height="50"
                 />
                 <span style={{ fontSize: "36px" }}>
-                  {Math.round(main.temp)}°C
+                  {Math.round(main.temp)}
+                  {celsiusSymbol}
                 </span>
               </div>
               <div>
                 {`Odczuwalna temperatura ${main.feels_like.toFixed(
                   1
-                )}°C. ${capitalize(weather[0].description)}`}
+                )}${celsiusSymbol}. ${capitalize(weather[0].description)}`}
               </div>
             </td>
           ))}

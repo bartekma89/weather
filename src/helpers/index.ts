@@ -1,6 +1,6 @@
 import { axios } from "../services";
 import { CityForecastData, CityWeatherData, WeatherType } from "../types";
-import { LANGUAGE, UNIT, Forecast } from "../constants";
+import { LANGUAGE, UNIT, Forecast, celsiusSymbol } from "../constants";
 
 type WeatherTypes =
   | WeatherType.HUMIDITY
@@ -26,6 +26,17 @@ type WeatherParametesType = {
   cityValue: number;
   precision?: number;
   calculatedValue: CalculatedValueType;
+};
+
+const dayName = (date: Date, locale: string = "pl") =>
+  date.toLocaleDateString(locale, { weekday: "short" });
+
+export const getFormatDate = (timestamp: number, locale: string = "pl") => {
+  const date = new Date(timestamp);
+  const day = dayName(date);
+  return `${day.toUpperCase()}, ${date
+    .toLocaleDateString(locale, { month: "short" })
+    .toUpperCase()} ${date.getDate()}`;
 };
 
 export const capitalize = (value: string) => {
@@ -65,12 +76,12 @@ export const getWeatherParameters = ({
             mainCityValue,
             cityValue,
             precision,
-          })}°C`
+          })}${celsiusSymbol}`
         : `Temperatura jest niższa o ${calculatedValue({
             mainCityValue,
             cityValue,
             precision,
-          })}°C`;
+          })}${celsiusSymbol}`;
     case WeatherType.WIND:
       return mainCityValue >= cityValue
         ? `Siła wiatru jest większa o ${calculatedValue({
