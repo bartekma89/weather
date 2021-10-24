@@ -13,7 +13,8 @@ export enum Routes {
 
 export const LANGUAGE = "pl";
 export const UNIT = "metric";
-export const celsiusSymbol = "°C";
+export const CELSIUS_SYMBOL = "°C";
+export const BASE_URL = "https://api.openweathermap.org/data/2.5";
 
 export enum Forecast {
   MINUTELY = "minutely",

@@ -1,4 +1,4 @@
-import { celsiusSymbol } from "../constants";
+import { CELSIUS_SYMBOL } from "../constants";
 import { CityForecastData } from "../types";
 import { capitalize, getFormatDate } from "../helpers";
 import { Card, CardBody } from "reactstrap";
@@ -32,7 +32,7 @@ const ForecastPanel = ({ cityForecast }: ComponentProps) => {
                   />
                   <span>
                     {Math.round(daily.temp.max)} / {Math.round(daily.temp.min)}{" "}
-                    {celsiusSymbol}
+                    {CELSIUS_SYMBOL}
                   </span>{" "}
                 </div>
                 <span className="d-flex flex-wrap text-end">

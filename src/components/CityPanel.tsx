@@ -2,7 +2,7 @@ import { Card, CardBody, CardText, CardTitle } from "reactstrap";
 
 import { CityWeatherData } from "../types";
 import { capitalize } from "../helpers";
-import { celsiusSymbol } from "../constants";
+import { CELSIUS_SYMBOL } from "../constants";
 
 interface ComponentProps {
   cityWeather: CityWeatherData;
@@ -34,13 +34,13 @@ const CityPanel = ({ cityWeather }: ComponentProps) => {
           />
           <span className="fs-2">
             {Math.round(cityWeather.main.temp)}
-            {celsiusSymbol}
+            {CELSIUS_SYMBOL}
           </span>
         </div>
         <CardText>
           {`Odczuwalna temperatura ${cityWeather.main.feels_like.toFixed(
             1
-          )}${celsiusSymbol}. ${capitalize(
+          )}${CELSIUS_SYMBOL}. ${capitalize(
             cityWeather.weather[0].description
           )}`}
         </CardText>

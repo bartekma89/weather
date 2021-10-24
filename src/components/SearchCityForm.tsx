@@ -14,16 +14,19 @@ import {
 import { fetchCityWeatherData } from "../actions/cityWeather.action";
 import { useHistory } from "react-router";
 
+// I did not use any form library because it is too small form to use a form library
+
 const SearchCityForm = () => {
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
   const dispatch = useDispatch();
   const history = useHistory();
 
+  // form validation
   const isValidateForm = (value: string) => {
     let valueError = "";
     if (!value) {
-      valueError = "Field is required";
+      valueError = "Podaj nazwę miasta";
     } else {
       valueError = "";
     }

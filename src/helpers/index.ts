@@ -1,6 +1,8 @@
 import { axios } from "../services";
 import { CityForecastData, CityWeatherData, WeatherType } from "../types";
-import { LANGUAGE, UNIT, Forecast, celsiusSymbol } from "../constants";
+import { LANGUAGE, UNIT, Forecast, CELSIUS_SYMBOL } from "../constants";
+
+// those types are using only in one place, this the reason, why they are not in types.ts file
 
 type WeatherTypes =
   | WeatherType.HUMIDITY
@@ -11,24 +13,21 @@ type WeatherTypes =
 type CalculationParams = {
   mainCityValue: number;
   cityValue: number;
-  precision?: number;
 };
 
 export type CalculatedValueType = ({
   mainCityValue,
   cityValue,
-  precision,
 }: CalculationParams) => number;
 
 type WeatherParametesType = {
   type: WeatherTypes;
   mainCityValue: number;
   cityValue: number;
-  precision?: number;
   calculatedValue: CalculatedValueType;
 };
 
-const dayName = (date: Date, locale: string = "pl") =>
+const dayName = (date: Date, locale: string = LANGUAGE) =>
   date.toLocaleDateString(locale, { weekday: "short" });
 
 export const getFormatDate = (timestamp: number, locale: string = "pl") => {
@@ -44,30 +43,32 @@ export const capitalize = (value: string) => {
   return `${first.toUpperCase()}${rest.join("")}`;
 };
 
+// method to fetch the weather in the city
 export const getWeatherCity = (city: string) =>
   axios.get<CityWeatherData>(
     `weather?q=${city}&lang=${LANGUAGE}&units=${UNIT}&appid=${process.env.REACT_APP_API_KEY}`
   );
 
+// method to fetch the forecast for the city
 export const getCityForecast = (lat: number, lon: number) =>
   axios.get<CityForecastData>(
     `onecall?lat=${lat}&lon=${lon}&exclude=${Forecast.MINUTELY},${Forecast.HOURLY}&lang=${LANGUAGE}&units=${UNIT}&appid=${process.env.REACT_APP_API_KEY}`
   );
 
+// method to calculate amplitude of temperature etc
 export const calculateAmplitudeValue = ({
   mainCityValue,
   cityValue,
-  precision = 0,
 }: CalculationParams): number => {
   return Math.abs(Math.round(mainCityValue) - Math.round(cityValue));
 };
 
-export const getWeatherParameters = ({
+// method to describe a weather
+export const displayWeatherDescription = ({
   type,
   mainCityValue,
   cityValue,
   calculatedValue,
-  precision,
 }: WeatherParametesType): string => {
   switch (type) {
     case WeatherType.TEMPERATURE:
@@ -75,48 +76,40 @@ export const getWeatherParameters = ({
         ? `Temperatura jest wyższa o ${calculatedValue({
             mainCityValue,
             cityValue,
-            precision,
-          })}${celsiusSymbol}`
+          })}${CELSIUS_SYMBOL}`
         : `Temperatura jest niższa o ${calculatedValue({
             mainCityValue,
             cityValue,
-            precision,
-          })}${celsiusSymbol}`;
+          })}${CELSIUS_SYMBOL}`;
     case WeatherType.WIND:
       return mainCityValue >= cityValue
         ? `Siła wiatru jest większa o ${calculatedValue({
             mainCityValue,
             cityValue,
-            precision,
           })}m/s`
         : `Siła wiatru jest słabsza o ${calculatedValue({
             mainCityValue,
             cityValue,
-            precision,
           })}m/s`;
     case WeatherType.HUMIDITY:
       return mainCityValue >= cityValue
         ? `Wilgotność jest wyższa o ${calculatedValue({
             mainCityValue,
             cityValue,
-            precision,
           })}%`
         : `Wilgotność jest niższa o ${calculatedValue({
             mainCityValue,
             cityValue,
-            precision,
           })}%`;
     case WeatherType.PRESSURE:
       return mainCityValue >= cityValue
         ? `Ciśnienie jest wyższe o ${calculatedValue({
             mainCityValue,
             cityValue,
-            precision,
           })}hPa`
         : `Cisnienie jest niższe o ${calculatedValue({
             mainCityValue,
             cityValue,
-            precision,
           })}hPa`;
     default:
       throw new Error();

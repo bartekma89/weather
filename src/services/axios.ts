@@ -1,7 +1,11 @@
 import _axios from "axios";
 
+import { BASE_URL } from "../constants";
+
+// axios configuration
+
 const axios = _axios.create({
-  baseURL: "https://api.openweathermap.org/data/2.5",
+  baseURL: BASE_URL,
   headers: {
     "content-type": "application/json",
   },

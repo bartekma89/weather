@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { Table } from "reactstrap";
 
-import { celsiusSymbol } from "../constants";
+import { CELSIUS_SYMBOL } from "../constants";
 import { CityWeatherData, WeatherType } from "../types";
 import {
   calculateAmplitudeValue,
-  getWeatherParameters,
+  displayWeatherDescription,
   CalculatedValueType,
   capitalize,
 } from "../helpers";
@@ -79,13 +79,13 @@ const CitiesTable = ({ citiesWeather, cityWeather }: ComponentProps) => {
                 />
                 <span style={{ fontSize: "36px" }}>
                   {Math.round(main.temp)}
-                  {celsiusSymbol}
+                  {CELSIUS_SYMBOL}
                 </span>
               </div>
               <div>
                 {`Odczuwalna temperatura ${main.feels_like.toFixed(
                   1
-                )}${celsiusSymbol}. ${capitalize(weather[0].description)}`}
+                )}${CELSIUS_SYMBOL}. ${capitalize(weather[0].description)}`}
               </div>
             </td>
           ))}
@@ -111,7 +111,7 @@ const CitiesTable = ({ citiesWeather, cityWeather }: ComponentProps) => {
             <td key={`weather_parameters_${city.id}`}>
               {weatherCitiesArray(city).map((cityData, idx) => (
                 <p key={`${idx}_${cityData.id}`}>
-                  {getWeatherParameters(cityData)}
+                  {displayWeatherDescription(cityData)}
                 </p>
               ))}
             </td>

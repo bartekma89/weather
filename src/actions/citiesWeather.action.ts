@@ -29,6 +29,7 @@ const citiesWeatherReject = (error: _Error): CitiesWeatherRejectedAction => ({
   payload: error,
 });
 
+// the all cities are fetching in this same moment
 export const fetchCitiesWeatherData = () => async (dispatch: Dispatch) => {
   dispatch(citiesWeatherPending());
 

@@ -4,6 +4,8 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 import { rootReducer } from "../reducers";
 
+// store configuration
+
 export const configureStore = () => {
   const middleware = [thunk];
   const middlewareEnhancer = applyMiddleware(...middleware);

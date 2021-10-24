@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Col, Row } from "reactstrap";
 
 import {
@@ -12,7 +12,6 @@ import {
 } from "../components";
 import {
   cityWeatherDataSelector,
-  cityWeatherErrorSelector,
   cityWeatherStatusSelector,
 } from "../selectors/cityWeather.selector";
 import {
@@ -23,7 +22,6 @@ import {
   cityForecastDataSelector,
   cityForecastStatusSelector,
 } from "../selectors/cityForecast.selector";
-import { Routes } from "../constants";
 import { Status } from "../types";
 import { fetchCitiesWeatherData } from "../actions/citiesWeather.action";
 import { fetchCityWeatherData } from "../actions/cityWeather.action";
@@ -32,13 +30,11 @@ import { fetchCityForecastData } from "../actions/cityForecast.action";
 type ParamsType = { city?: string };
 
 const City = () => {
-  const history = useHistory();
   const params = useParams<ParamsType>();
   const dispatch = useDispatch();
 
   const cityWeatherData = useSelector(cityWeatherDataSelector);
   const cityWeatherStatus = useSelector(cityWeatherStatusSelector);
-  const cityWeatherError = useSelector(cityWeatherErrorSelector);
   const citiesWeatherData = useSelector(citiesWeatherDataSelector);
   const citiesWeatherStatus = useSelector(citiesWeatherStatusSelector);
   const cityForecastData = useSelector(cityForecastDataSelector);
@@ -79,6 +75,7 @@ const City = () => {
     [citiesWeatherStatus]
   );
 
+  // the forecast data will not be fetched until weather for the city has not been fetched
   useEffect(() => {
     cityWeatherData &&
       dispatch(
@@ -89,25 +86,24 @@ const City = () => {
       );
   }, [cityWeatherData, cityWeatherData?.id, dispatch]);
 
+  // fetch data based on the url city param, when you go to previous or next page
   useEffect(() => {
     if (localStorage.getItem("city") !== params.city) {
       dispatch(fetchCityWeatherData(params.city!));
       localStorage.setItem("city", params.city!);
     }
+    if (params.city) {
+      dispatch(fetchCityWeatherData(params.city!));
+    }
   }, [params.city, dispatch]);
 
-  useEffect(() => {
-    if (!cityWeatherData && !cityWeatherError) {
-      history.push(Routes.HOME);
-    }
-  }, [history, cityWeatherData, cityWeatherError]);
-
+  // the cities data will not be fetched until weather for the city has not been fetched
   useEffect(() => {
     cityWeatherData && dispatch(fetchCitiesWeatherData());
   }, [dispatch, cityWeatherData]);
 
   return (
-    <>
+    <Row>
       <SearchCityForm />
       <Row className="my-5">
         <Col sm="8" md="4" lg="4" xl="3">
@@ -130,7 +126,7 @@ const City = () => {
           />
         </Row>
       )}
-    </>
+    </Row>
   );
 };
 

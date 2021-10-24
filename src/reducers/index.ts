@@ -25,4 +25,5 @@ export const rootReducer = combineReducers<AppState>({
   cityForecast: cityForecastReducer,
 });
 
+// type of state
 export type RootState = ReturnType<typeof rootReducer>;
