@@ -11,7 +11,7 @@ const ForecastPanel = ({ cityForecast }: ComponentProps) => {
   return (
     <Card>
       <CardBody>
-        <h4>{cityForecast?.daily?.length}-day forecast</h4>
+        <h4>{cityForecast?.daily?.length}-dniowa prognowa</h4>
         <ul id="daily-list" className="mb-0 ps-0">
           {cityForecast?.daily?.map((daily, idx) => (
             <li
